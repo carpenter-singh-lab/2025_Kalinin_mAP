@@ -1,10 +1,10 @@
 import hydra
 import pandas as pd
+from copairs.matching import assign_reference_index
 from omegaconf import DictConfig, OmegaConf
 
 from map_utils.eval_metrics.evaluate import calculate_accuracy, evaluate_metrics
 from map_utils.eval_metrics.generate_data import generate_features
-from copairs.matching import assign_reference_index
 
 
 def get_perturb_feature_range(
@@ -64,10 +64,10 @@ def main(cfg: DictConfig):
                         features_differ={perturb_distr: n_perturb_features},
                         differ_params=cfg.perturb_distribs,
                     )
-                    # each control gets its own index (its row label), perturbations get -1
+                    # controls get their own row label as index; perturbations get -1
                     dframe = assign_reference_index(
                         dframe,
-                        dframe.index[dframe["Metadata_Perturbation"] == "negative_control"],
+                        "Metadata_Perturbation == 'negative_control'",
                         reference_col="Metadata_Control_Index",
                     )
 
