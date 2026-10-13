@@ -1,6 +1,5 @@
 from pathlib import Path
 from functools import partial
-from pkg_resources import resource_filename
 
 import numpy as np
 import plotnine as gg
@@ -93,7 +92,7 @@ def add_corner_text_annotations(
 
 
 def set_plotting_style(font_size=16, linewidth=1):
-    font_path = resource_filename(__name__, "fonts/OpenSans-Regular.ttf")
+    font_path = Path(__file__).parent / "fonts" / "OpenSans-Regular.ttf"
     font_manager.fontManager.addfont(font_path)
     _ = font_manager.FontProperties(fname=font_path)
     plt.rcParams["font.family"] = ["Open Sans"]
