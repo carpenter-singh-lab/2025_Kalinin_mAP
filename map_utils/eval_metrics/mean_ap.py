@@ -21,7 +21,7 @@ def copairs_similarity(
     distance: str = "cosine",
 ) -> tuple[npt.ArrayLike, npt.ArrayLike]:
     """Compute similarity for positive and negative pairs."""
-    pairwise_distance = compute.get_distance_fn(distance)
+    pairwise_distance = compute.get_similarity_fn(distance)
     pos_sims = pairwise_distance(feats, pos_pairs, batch_size)
     neg_sims = pairwise_distance(feats, neg_pairs, batch_size)
     return pos_sims, neg_sims
