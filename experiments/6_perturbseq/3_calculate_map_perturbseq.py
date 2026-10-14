@@ -209,8 +209,8 @@ def compute_umap_embeddings(
 ):
     """Computes and saves UMAP embeddings in parallel."""
     print("Computing UMAP embeddings per gene...")
-    # spawn, not fork: libgomp aborts a forked child that reuses OpenMP once the parent has
-    # (numba-parallel copairs kernels run on GNU OpenMP)
+    # spawn, not fork: copairs' fast method (cytomining/copairs#150) runs numba
+    # kernels on GNU OpenMP, and libgomp aborts forked children that use it again
     with ProcessPoolExecutor(
         max_workers=12, mp_context=multiprocessing.get_context("spawn")
     ) as executor:
