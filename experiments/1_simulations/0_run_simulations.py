@@ -19,7 +19,7 @@ def get_perturb_feature_range(
     if step_type == "bin_exp":
         differ_range = [2**i for i in differ_range]
     elif step_type == "linear":
-        # always start at 1 differential feature
+        # always start at 1%
         differ_range = [1] + list(differ_range)
     return distribution, list(differ_range)
 
