@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-BASE_S3="https://cellpainting-gallery.s3.amazonaws.com/cpg0016-jump-assembled/source_all/workspace/profiles/jump-profiling-recipe_2024_a917fa7/ORF/profiles_wellpos_cc_var_mad_outlier_featselect_sphering_harmony"
+BASE_S3="https://cellpainting-gallery.s3.amazonaws.com/cpg0016-jump-assembled/source_all/workspace/profiles_assembled/ORF/v1.0a"
 BASE_GITHUB_MORPHMAP="https://github.com/jump-cellpainting/2024_Chandrasekaran_Morphmap/raw"
 BASE_GITHUB_DATASETS="https://github.com/jump-cellpainting/datasets/raw"
 

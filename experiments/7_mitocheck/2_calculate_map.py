@@ -2,6 +2,7 @@
 # coding: utf-8
 
 import warnings
+import multiprocessing
 from pathlib import Path
 from concurrent.futures import ProcessPoolExecutor
 
@@ -68,7 +69,11 @@ def compute_umap_embeddings(sc_df: pd.DataFrame, output_dir: Path) -> tuple[list
     reducers = [
         umap.UMAP(metric="cosine", n_neighbors=30, min_dist=0.1, random_state=42)
     ] * len(morpho_classes)
-    with ProcessPoolExecutor(max_workers=12) as executor:
+    # spawn, not fork: copairs' fast method (cytomining/copairs#150) runs numba
+    # kernels on GNU OpenMP, and libgomp aborts forked children that use it again
+    with ProcessPoolExecutor(
+        max_workers=12, mp_context=multiprocessing.get_context("spawn")
+    ) as executor:
         results = list(
             executor.map(
                 compute_umap_for_class,

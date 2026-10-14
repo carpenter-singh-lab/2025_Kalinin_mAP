@@ -30,7 +30,7 @@ perturb_params:
   range_min: 0
   range_max: 7
   step_type: "bin_exp"
-  # range_min: 10 # will start at 1 feature automatically
+  # range_min: 10 # will start at 1% automatically
   # range_max: 101
   # step_size: 10
   # step_type: "linear"
