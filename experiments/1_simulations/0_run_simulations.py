@@ -15,14 +15,14 @@ def get_perturb_feature_range(
     step_type: int,
     step_size: int = 1,
 ) -> tuple[str, list[int]]:
-    """Generate a list of feature differences based on the provided configuration."""
+    """Generate the percentages of features that differ, based on the provided configuration."""
     differ_range = range(range_min, range_max, step_size)
     if step_type == "bin_exp":
         differ_range = [2**i for i in differ_range]
     elif step_type == "linear":
         # always start at 1 differential feature
         differ_range = [1] + list(differ_range)
-    return distribution, [int(i * (n_feats / 100)) for i in differ_range]
+    return distribution, list(differ_range)
 
 
 @hydra.main(config_path=".", config_name="config", version_base="1.2")
@@ -41,11 +41,12 @@ def main(cfg: DictConfig):
     for n_feats in cfg.n_feats_range:
         for n_plates, controls in cfg.plates_controls.items():
             for n_controls in controls:
-                perturb_distr, perturb_features = get_perturb_feature_range(
+                perturb_distr, percents_differ = get_perturb_feature_range(
                     n_feats, **cfg.perturb_params
                 )
 
-                for n_perturb_features in perturb_features:
+                for percent_differ in percents_differ:
+                    n_perturb_features = int(percent_differ * (n_feats / 100))
                     print(
                         f"\nProcessing {perturb_distr} differential features: {n_perturb_features} of {n_feats} "
                         f"({n_perturb_features / n_feats}), feats {n_feats}, plates {n_plates}, "
@@ -85,7 +86,8 @@ def main(cfg: DictConfig):
                             "n_feats": n_feats,
                             "# replicates": n_plates,
                             "n_controls": n_controls * n_plates,
-                            "features_differ": n_perturb_features,
+                            # the percentage, which the plots and committed results use
+                            "features_differ": percent_differ,
                         }
                     )
 
