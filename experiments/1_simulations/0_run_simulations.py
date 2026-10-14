@@ -8,7 +8,6 @@ from map_utils.eval_metrics.generate_data import generate_features
 
 
 def get_perturb_feature_range(
-    n_feats: int,
     distribution: str,
     range_min: int,
     range_max: int,
@@ -37,14 +36,12 @@ def main(cfg: DictConfig):
         f"distrib_proportions: {cfg.distrib_proportions}"
     )
 
+    perturb_distr, percents_differ = get_perturb_feature_range(**cfg.perturb_params)
+
     acc_results = []
     for n_feats in cfg.n_feats_range:
         for n_plates, controls in cfg.plates_controls.items():
             for n_controls in controls:
-                perturb_distr, percents_differ = get_perturb_feature_range(
-                    n_feats, **cfg.perturb_params
-                )
-
                 for percent_differ in percents_differ:
                     n_perturb_features = int(percent_differ * (n_feats / 100))
                     print(
