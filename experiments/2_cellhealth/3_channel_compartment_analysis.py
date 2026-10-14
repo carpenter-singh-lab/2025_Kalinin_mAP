@@ -300,7 +300,7 @@ def main():
 
     # Process and plot channel analysis
     channels = ["DNA", "RNA", "Mito", "AGP", "ER"]
-    cell_lines = get_cell_line_colors().keys()
+    cell_lines = list(get_cell_line_colors().keys())
     if channel_map_results.exists():
         print(f"Loading existing channel analysis results from {channel_map_results}")
         per_channel_df = pd.read_csv(channel_map_results)
