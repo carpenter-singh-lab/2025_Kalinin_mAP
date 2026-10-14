@@ -2,6 +2,7 @@
 #
 # Also calculate UMAP embeddings for each perturbation at the same time.
 
+import multiprocessing
 from pathlib import Path
 from concurrent.futures import ProcessPoolExecutor
 
@@ -208,7 +209,11 @@ def compute_umap_embeddings(
 ):
     """Computes and saves UMAP embeddings in parallel."""
     print("Computing UMAP embeddings per gene...")
-    with ProcessPoolExecutor(max_workers=12) as executor:
+    # spawn, not fork: libgomp aborts a forked child that reuses OpenMP once the parent has
+    # (numba-parallel copairs kernels run on GNU OpenMP)
+    with ProcessPoolExecutor(
+        max_workers=12, mp_context=multiprocessing.get_context("spawn")
+    ) as executor:
         umap_results = list(
             executor.map(
                 compute_umap_for_gene,
